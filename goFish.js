@@ -2,29 +2,41 @@
 
 // play go fish with the console in your browser
 
-const cardGame = require('./cardGame')
-let deck = cardGame.Deck(),
-	  Player = cardGame.Player();
+// const cardGame = require('./cardGame');
+let Deck = cardGame.Deck();
+let Player = cardGame.Player;
 
 // Add functionality to the Player prototype
 Player.pairs = [];
 Player.score = function playerScore() {
 	return this.pairs.length;
 }
-// ask function is going to need a lot of work I think
-// so far I think the matching aspect is a workable block; the issue comes with id'ing cards
-// this.hand.inlcudes(card) would always return false because hand is a 2d array
-// search the 2d array for the text?
-// if 'card' is rank only ('ace'), check hand[i][2], if full name ('ace of hearts'), check hand[i][0]
-// OR hand is not an array but an object with a method to check for a particular card...
 Player.ask = function playerAsk(card,opponent) {
-	card = card.toLowerCase();
-	if (this.hand.includes(card)) {
-		for (let i = 0; i < opponent.hand.length; i++) {
-			if (card[2] == opponent.hand[i][2]) {
-				this.pairs.push( [this.hand.splice(card,1),opponent.hand.splice(i,1)] )
-				break;
+	// check function to find and element in a set
+	function inSet(elem,set) {
+		let l = set.length;
+		for (let i = 0; i < l; i++) {
+			if (set[i] == elem) {
+				return true;
+			} else {
+				return false
 			}
 		}
+	}
+	// is the card being asked for even in the player's hand?
+	card = card.toLowerCase();
+
+	if (inSet(card,Player.hand)) {
+		if (inSet(card,opponent.hand)) {
+			console.log("You got a match!")
+			let match = [Player.hand.splice(card,1),
+										opponent.hand.splice(card,1)]; // obviously dumb, how do we translate the card arg to a useable reference for the deck?
+			Player.pairs.push(match);
+		} else {
+			console.log("You gotta draw another one")
+			Player.draw();
+		}
+	} else {
+		return console.error("Card ain't in your hand, mack");
 	}
 }
