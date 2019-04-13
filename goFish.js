@@ -35,7 +35,6 @@ for (let s = 0; s < suits.length; s++) {
 }
 
 // Player class
-// there's newer syntax for this, but this works for now
 class Player {
     constructor(name) {
         this.name = name;
