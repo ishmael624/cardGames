@@ -1,0 +1,2 @@
+{ message: '{"numTurns":42,"winner":"Tie","playerScores":{"One":0,"Two":0}}',
+  level: 'info' }
